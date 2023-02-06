@@ -1,0 +1,45 @@
+﻿const TelegramBot = require('node-telegram-bot-api');
+const schedule = require('node-schedule');
+const JSONdb = require('simple-json-db');
+const token = '6115036788:AAFvqeAT4Hxzr_GRKZ8auQbPpQVllce4aYk';
+const db = new JSONdb('./src/storage.json');
+const bot = new TelegramBot(token, {polling: true});
+
+function checkTodaysDate(jsonData) {
+  let today = new Date();
+  today.setDate(today.getDate() - 2)
+  today = today.toLocaleDateString()
+  for (const key in jsonData) {
+    if (Date.parse(jsonData[key]) === Date.parse(today)) {
+      bot.sendMessage(261472549, `Блин блинский, дедлайн по ${key} через два дня`);
+      console.log(key)
+      break;
+      
+    }
+  }
+}
+
+bot.onText(/\/deadline (.+) on (.+)/, (msg, match) => {
+  const chatId = msg.chat.id;
+  const description = match[1];
+  if (db.has(match[1])) {
+    bot.sendMessage(chatId, `Дедлайн уже есть в списке`)
+  } else {
+  const deadline = new Date(match[2]);
+  const notificationTime = new Date(deadline.toDateString());
+  console.log(notificationTime)
+  db.set(match[1], match[2]);
+}
+});
+bot.onText(/\/info/, (msg) => {
+  const chatId = msg.chat.id;
+  bot.sendMessage(chatId, JSON.stringify(db.JSON()).replace(/[{}]/g, '').replace(",", '\n'))
+})
+
+checkTodaysDate(db.JSON())
+
+schedule.scheduleJob('2 0 10 * * *', function(){
+  checkTodaysDate(db.JSON())
+});
+
+
