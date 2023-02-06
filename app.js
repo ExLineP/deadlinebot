@@ -33,8 +33,19 @@ bot.onText(/\/deadline (.+) on (.+)/, (msg, match) => {
 });
 bot.onText(/\/info/, (msg) => {
   const chatId = msg.chat.id;
-  bot.sendMessage(chatId, JSON.stringify(db.JSON()).replace(/[{}]/g, '').replace(",", '\n'))
+  bot.sendMessage(chatId, JSON.stringify(db.JSON()).replace(/[{}]/g, '').replace(/,/g, '\n'))
 })
+
+bot.onText(/\/delete (.+)/, (msg, match) => {
+  const chatId = msg.chat.id;
+  if (db.has(match[1])) {
+    db.delete(match[1]);
+    bot.sendMessage(chatId, `Удалено`)
+  } else {
+  bot.sendMessage(chatId, `Такого дедлайна нет`)
+}
+});
+
 
 checkTodaysDate(db.JSON())
 
