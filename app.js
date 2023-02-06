@@ -1,7 +1,7 @@
 ﻿const TelegramBot = require('node-telegram-bot-api');
 const schedule = require('node-schedule');
 const JSONdb = require('simple-json-db');
-const token = '6115036788:AAFvqeAT4Hxzr_GRKZ8auQbPpQVllce4aYk';
+const token = '6115036788:AAELtCtLlk20CD8T0rVjEMWvCvwYWVE1Dm0';
 const db = new JSONdb('./src/storage.json');
 const bot = new TelegramBot(token, {polling: true});
 
