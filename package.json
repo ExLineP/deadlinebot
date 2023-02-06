@@ -8,6 +8,9 @@
     "simple-json-db": "^2.0.0",
     "toad-scheduler": "^2.2.0"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "nodemonConfig": {
     "ext": "js",
     "ignore": [
@@ -16,6 +19,6 @@
     "delay": "2"
   },
   "scripts": {
-    "start": "nodemon"
+    "start": "node app.js"
   }
 }
