@@ -1,8 +1,8 @@
 ﻿const TelegramBot = require('node-telegram-bot-api');
 const schedule = require('node-schedule');
 const JSONdb = require('simple-json-db');
-const token = '6115036788:AAELtCtLlk20CD8T0rVjEMWvCvwYWVE1Dm0';
-const db = new JSONdb('./src/storage.json');
+const token = '6115036788:AAE-85QeqELMoD3S5aTY0I3Q78V9Kfk2XOw';
+const db = new JSONdb('./db/storage.json');
 const bot = new TelegramBot(token, {polling: true});
 
 function checkTodaysDate(jsonData) {
@@ -46,11 +46,9 @@ bot.onText(/\/delete (.+)/, (msg, match) => {
 }
 });
 
-
-checkTodaysDate(db.JSON())
-
 schedule.scheduleJob('2 0 10 * * *', function(){
   checkTodaysDate(db.JSON())
 });
 
+bot.on("polling_error", console.log);
 
